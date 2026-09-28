@@ -14,9 +14,13 @@ spring:
   cloud:
     gateway:
       server:
-        webmvc:
+        webflux:
           routes:
             - id: like-service
-              uri: http://localhost:8081/
+              uri: lb://LIKE-SERVICE
               predicates:
-                - Path=/like/**
+                - Path=/like-service/**
+            - id: user-service
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/user-service/**

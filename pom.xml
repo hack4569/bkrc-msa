@@ -16,8 +16,11 @@
     <description>bkrc-msa</description>
     <modules>
         <module>apigateway-service</module>
+        <module>user-service</module>
         <module>like-service</module>
         <module>service-discovery</module>
+
+        <module>common</module>
     </modules>
     <url/>
     <licenses>
