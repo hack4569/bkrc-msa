@@ -1,6 +1,7 @@
 package com.example.userservice.security;
 
 
+import com.example.common.security.GatewayMemberAuthenticationFilter;
 import com.example.userservice.application.UserService;
 import com.example.userservice.entity.PasswordEncoder;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,22 +48,12 @@ public class WebSecurity {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-                        .requestMatchers(
-                                "/v1/like/**",
-                                "/v1/history/**",
-                                "/v1/recommend/**"
-                                ).authenticated()
-                        .requestMatchers(HttpMethod.GET, "/v1/member/*").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/v1/member/*").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/v1/aladin/books/search").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/v1/aladin/books/recommend/user").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/v1/aladin/books/recommend/user").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/v1/aladin/books/recommend/*").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/v1/aladin/books/recommend/*").authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/user-service/v1/member").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .authenticationManager(authenticationManager)
-                .addFilterBefore(getJwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new GatewayMemberAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilter(getAuthenticationFilter(authenticationManager))
                 .headers((headers) -> headers
                         .frameOptions((frameOptions) -> frameOptions.sameOrigin()));
@@ -87,10 +78,6 @@ public class WebSecurity {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
-    }
-
-    private JwtAuthorizationFilter getJwtAuthorizationFilter() {
-        return new JwtAuthorizationFilter(env);
     }
 
     private AuthenticationFilter getAuthenticationFilter(AuthenticationManager authenticationManager) throws Exception {

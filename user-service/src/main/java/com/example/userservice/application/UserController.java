@@ -6,6 +6,7 @@ import com.example.userservice.application.request.MemberWithdrawRequest;
 import com.example.userservice.application.response.MemberInfoResponse;
 import com.example.userservice.application.response.MemberModifyResponse;
 import com.example.userservice.application.response.MemberRegisterResponse;
+import com.example.common.security.GatewayMemberAuthenticationFilter;
 import com.example.userservice.entity.PasswordEncoder;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,7 +18,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,7 +66,8 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
     public MemberInfoResponse getMemberInfo(
-            @Parameter(hidden = true) @AuthenticationPrincipal Long memberId) {
+            @Parameter(hidden = true)
+            @RequestHeader(GatewayMemberAuthenticationFilter.MEMBER_ID_HEADER) Long memberId) {
         return userService.getMemberInfo(memberId);
     }
 
