@@ -8,6 +8,8 @@ import com.example.common.security.GatewayMemberAuthenticationFilter;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -24,5 +26,15 @@ public class HistoryController {
             @RequestParam @NotNull(message = "itemId는 필수입니다.") Integer itemId
     ) {
         historyService.saveHistory(itemId, memberId);
+    }
+
+    @GetMapping("/internal/v1/histories/{memberId}")
+    public List<HistoryResponse> getHistories(@PathVariable Long memberId) {
+        return historyService.getHistoryByMemberId(memberId);
+    }
+
+    @DeleteMapping("/internal/v1/histories/{memberId}")
+    public long deleteHistories(@PathVariable Long memberId) {
+        return historyService.deleteHistoryByMemberId(memberId);
     }
 }

@@ -54,9 +54,12 @@ public class WebSecurity {
                         .pathMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .pathMatchers("/user-service/v3/api-docs/**").permitAll()
                         .pathMatchers("/history-service/swagger-ui/**", "/history-service/v3/api-docs/**").permitAll()
+                        .pathMatchers("/aladin-service/swagger-ui/**", "/aladin-service/v3/api-docs/**").permitAll()
                         .pathMatchers(HttpMethod.POST, "/user-service/v1/member").permitAll()
                         .pathMatchers(HttpMethod.POST, "/user-service/login").permitAll()
-                        .pathMatchers("/user-service/**", "/history-service/**", "/like-service/**").authenticated()
+                        .pathMatchers(HttpMethod.GET, "/aladin-service/v1/aladin/books").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/aladin-service/v1/aladin/books/recommend/user").permitAll()
+                        .pathMatchers("/user-service/**", "/history-service/**", "/like-service/**", "/aladin-service/**").authenticated()
                         .anyExchange().denyAll()
                 )
                 .build();

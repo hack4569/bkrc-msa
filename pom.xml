@@ -19,6 +19,7 @@
         <module>user-service</module>
         <module>like-service</module>
         <module>history-service</module>
+        <module>aladin-service</module>
         <module>service-discovery</module>
 
         <module>common</module>
