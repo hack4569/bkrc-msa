@@ -1,6 +1,21 @@
 spring:
+  config:
+    import:
+      - optional:file:.env[.properties]
+      - optional:file:../.env[.properties]
   application:
     name: like-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${LIKE_DB_URL:${DB_URL:jdbc:mysql://localhost:3306/book_recommend?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8}}
+    username: ${LIKE_DB_USERNAME:${DB_USERNAME:root}}
+    password: ${LIKE_DB_PASSWORD:${DB_PASSWORD}}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
 
 server:
   port: 8081
@@ -15,3 +30,16 @@ eureka:
   instance:
     instance-id: ${spring.cloud.client.ip-address}:${spring.application.instance_id:${random.value}}
     prefer-ip-address: true
+
+springdoc:
+  swagger-ui:
+    url: /like-service/v3/api-docs
+
+openapi:
+  server-url: ${OPENAPI_SERVER_URL:http://localhost:8000}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

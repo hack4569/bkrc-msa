@@ -15,7 +15,9 @@ public class WebSecurity {
         return http
                 .csrf(csrf -> csrf.disable())
                 .addFilterBefore(new GatewayMemberAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/actuator/health").permitAll()
+                        .anyRequest().authenticated())
                 .build();
     }
 }

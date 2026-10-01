@@ -1,0 +1,36 @@
+server:
+  port: 8888
+
+spring:
+  config:
+    import:
+      - optional:file:.env[.properties]
+      - optional:file:../.env[.properties]
+  application:
+    name: config-service
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5673
+    username: guest
+    password: guest
+  profiles:
+    active: git
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/hack4569/bkrc-msa-config
+          default-label: main
+          username: ${GITHUB_USERNAME}
+          password: ${GITHUB_TOKEN}
+
+  management:
+    endpoints:
+      web:
+        exposure:
+          include:
+            - refresh
+            - health
+            - beans
+            - info
+            - busrefresh

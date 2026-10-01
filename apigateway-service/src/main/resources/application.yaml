@@ -44,6 +44,12 @@ spring:
                 - Path=/aladin-service/v3/api-docs/**
               filters:
                 - StripPrefix=1
+용            - id: like-service-openapi
+              uri: lb://LIKE-SERVICE
+              predicates:
+                - Path=/like-service/v3/api-docs/**
+              filters:
+                - StripPrefix=1
             - id: aladin-service
               uri: lb://ALADIN-SERVICE
               predicates:
@@ -73,3 +79,5 @@ springdoc:
         url: /history-service/v3/api-docs
       - name: aladin-service
         url: /aladin-service/v3/api-docs
+      - name: like-service
+        url: /like-service/v3/api-docs
